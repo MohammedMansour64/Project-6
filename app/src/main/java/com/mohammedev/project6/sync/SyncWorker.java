@@ -36,7 +36,7 @@ public class SyncWorker extends Worker {
             @Override
             public void run() {
                 repository.insertAlert(alert);
-                System.out.println(4);
+                System.out.println(3244);
             }
         });
 
