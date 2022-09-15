@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">We Care</string>
+    <string name="times_notified_today">Today\'s Notifications</string>
+    <string name="default_number_04" translatable="false">04</string>
+    <string name="weekly_avg">Weekly Average</string>
+    <string name="default_number_03" translatable="false">03</string>
+    <string name="daily_data">Daily Data</string>
+    <string name="day">Day</string>
+
+    <string-array name="dates">
+        <item>01/01/2019</item>
+        <item>01/02/2019</item>
+        <item>01/03/2019</item>
+        <item>01/04/2019</item>
+        <item>01/05/2019</item>
+        <item>01/06/2019</item>
+    </string-array>
+</resources>
