@@ -1,6 +1,5 @@
 package com.mohammedev.project6.Background;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -33,25 +32,51 @@ public class AlertsRepository {
         return sInstance;
     }
 
+    public LiveData<Alert> getAlertLiveData(){
+        final LiveData<Alert> alertLiveData = db.alertsDao().getAlert();
+        return alertLiveData;
+    }
+
     public LiveData<List<Alert>> getAlerts(){
         LiveData<List<Alert>> allAlerts = db.alertsDao().getAlerts();
         return allAlerts;
     }
 
     public void insertAlert(Alert alert){
-        new InsertAsyncTaskAlert(mAlertsDao).execute(alert);
+        new InsertAlertAsyncTask(mAlertsDao).execute(alert);
     }
 
-    private static class InsertAsyncTaskAlert extends AsyncTask<Alert , Void , Void> {
+    public void updateAlert(Alert alert){
+        new UpdateAlertAsyncTask(mAlertsDao).execute(alert);
+    }
+
+    private static class InsertAlertAsyncTask extends AsyncTask<Alert , Void , Void> {
         private AlertsDao mAlertsDao;
 
-        public InsertAsyncTaskAlert(AlertsDao alertsDao) {
+        public InsertAlertAsyncTask(AlertsDao alertsDao) {
             mAlertsDao = alertsDao;
         }
 
         @Override
         protected Void doInBackground(Alert... alerts) {
             mAlertsDao.insertAlert(alerts[0]);
+
+            return null;
+        }
+    }
+
+    private static class UpdateAlertAsyncTask extends AsyncTask<Alert, Void , Void>{
+
+        private AlertsDao mAlertsDao;
+
+        public UpdateAlertAsyncTask(AlertsDao mAlertsDao) {
+            this.mAlertsDao = mAlertsDao;
+        }
+
+        @Override
+        protected Void doInBackground(Alert... alerts) {
+
+            mAlertsDao.updateAlert(alerts[0]);
 
             return null;
         }

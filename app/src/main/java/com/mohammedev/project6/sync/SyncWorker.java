@@ -35,8 +35,7 @@ public class SyncWorker extends Worker {
         AppExecutor.getInstance().getMainThread().execute(new Runnable() {
             @Override
             public void run() {
-                repository.insertAlert(alert);
-                System.out.println(3244);
+
             }
         });
 
