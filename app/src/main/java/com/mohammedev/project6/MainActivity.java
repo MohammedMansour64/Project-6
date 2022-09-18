@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.mohammedev.project6.R;
 import com.mohammedev.project6.data.entity.Alert;
+import com.mohammedev.project6.sync.SyncUtils;
+import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenBroadcastReceiver;
 import com.mohammedev.project6.viewmodel.AlertViewModel;
 
@@ -26,12 +28,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        NotificationUtils.createWeatherStatusNotificationChannel(this);
+
         notificationsTextView = findViewById(R.id.notifications_txt);
         weeklyAverageTextView = findViewById(R.id.weekly_average_txt);
         dailyDataBtn = findViewById(R.id.daily_data_btn);
 
         ScreenBroadcastReceiver.startTimer(getApplicationContext());
 
+//        SyncUtils.startSync(this);
+        SyncUtils.scheduleSync(this);
     }
 
 

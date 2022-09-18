@@ -28,7 +28,7 @@ public class SyncUtils {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(SyncWorker.class , 25 , TimeUnit.MINUTES)
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(SyncWorker.class , 1 , TimeUnit.SECONDS)
                 .setConstraints(constraints)
                 .build();
 

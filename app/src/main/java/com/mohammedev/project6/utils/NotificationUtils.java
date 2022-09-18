@@ -1,10 +1,21 @@
 package com.mohammedev.project6.utils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
+import com.mohammedev.project6.MainActivity;
+import com.mohammedev.project6.R;
 import com.mohammedev.project6.data.entity.Alert;
 
 /**
@@ -13,7 +24,7 @@ import com.mohammedev.project6.data.entity.Alert;
 
 public class NotificationUtils {
     private static final String USAGE_ALERT_CHANNEL_ID = "Usage Alert";
-    private static final int WEATHER_NOTIFICATION_ID = 1;
+    public static final int ALERT_NOTIFICATION_ID = 1;
 
     /**
      * This Method is for creating the notification channel, that then used to create notifications
@@ -39,9 +50,38 @@ public class NotificationUtils {
     }
 
 
-    public static void showUsageAlertNotification(Context context , Alert alert){
-        if (alert == null) return;
+    public static Notification getSyncNotification(Context context , Alert alert){
+        String notificationTitle = "Alert test";
+        String notificationText = "Alert test";
 
-        if ()
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context , USAGE_ALERT_CHANNEL_ID)
+                .setOngoing(true)
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationText)
+                .setSmallIcon(R.drawable.circle);
+
+        return notificationBuilder.build();
+
+    }
+
+    public static void getSyncNotificationTwo(Context context){
+        String notificationTitle = context.getString(R.string.app_name);
+        String notificationText = "Test";
+        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.circle);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, USAGE_ALERT_CHANNEL_ID);
+        notificationBuilder.setColor(ContextCompat.getColor(context , R.color.colorAccent));
+        notificationBuilder.setSmallIcon(R.drawable.circle);
+        notificationBuilder.setLargeIcon(largeIcon);
+        notificationBuilder.setContentTitle(notificationTitle);
+        notificationBuilder.setContentText(notificationText);
+        notificationBuilder.setAutoCancel(true);
+        Intent intent = new Intent(context, MainActivity.class);
+        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+        taskStackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0 , PendingIntent.FLAG_IMMUTABLE);
+        notificationBuilder.setContentIntent(pendingIntent);
+        Notification notification = notificationBuilder.build();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(ALERT_NOTIFICATION_ID , notification);
     }
 }

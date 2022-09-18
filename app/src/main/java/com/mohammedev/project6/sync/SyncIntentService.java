@@ -1,17 +1,19 @@
 package com.mohammedev.project6.sync;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
 import com.mohammedev.project6.utils.AppExecutor;
+import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenBroadcastReceiver;
 
 public class SyncIntentService extends IntentService {
 
-    public SyncIntentService(String name) {
-        super(name);
+    public SyncIntentService() {
+        super(SyncIntentService.class.getName());
     }
 
     @Override
@@ -35,5 +37,7 @@ public class SyncIntentService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Notification notification = NotificationUtils.getSyncNotification(this , null);
+        startForeground(NotificationUtils.ALERT_NOTIFICATION_ID , notification);
     }
 }

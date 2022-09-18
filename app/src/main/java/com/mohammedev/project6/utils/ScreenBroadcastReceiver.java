@@ -53,6 +53,7 @@ public class ScreenBroadcastReceiver {
                     public void run() {
                         time++;
                         currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
+                        System.out.println(time);
                     }
                 };
                 timer.schedule(timerTask, 1500000);
