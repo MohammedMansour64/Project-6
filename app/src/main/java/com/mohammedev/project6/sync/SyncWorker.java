@@ -37,15 +37,11 @@ public class SyncWorker extends Worker {
             @Override
             public void run() {
 //                NotificationUtils.getSyncNotificationTwo(getApplicationContext());
-//                Intent intent = new Intent(getApplicationContext() , SyncIntentService.class);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//                    getApplicationContext().startForegroundService(intent);
-//                }else{
-//                    getApplicationContext().startService(intent);
-//                }
-
-                for (int i = 0; i <= 10; i++){
-                    Log.d(TAG, "doWork: number: " + "All Might");
+                Intent intent = new Intent(getApplicationContext() , ScreenOnOffService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    getApplicationContext().startForegroundService(intent);
+                }else{
+                    getApplicationContext().startService(intent);
                 }
 
             }

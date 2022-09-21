@@ -1,10 +1,12 @@
 package com.mohammedev.project6.utils;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
@@ -23,10 +25,12 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ScreenBroadcastReceiver {
+public class ScreenOnOffReceiver extends BroadcastReceiver {
 
     private static int currentTimeInMinutes;
     private static int time;
+
+    private static final String TAG = "ScreenBroadcastReceiver";
 
 
     /**
@@ -45,7 +49,6 @@ public class ScreenBroadcastReceiver {
      */
     public static void startTimer(Context context) {
         Timer timer = new Timer();
-        if (screenState()) {
             if (timeAchieved(context)) {
                 time = 0;
                 TimerTask timerTask = new TimerTask() {
@@ -53,7 +56,7 @@ public class ScreenBroadcastReceiver {
                     public void run() {
                         time++;
                         currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
-                        System.out.println(time);
+                        Log.d(TAG, "run: timerTime: " + time);
                     }
                 };
                 timer.schedule(timerTask, 1500000);
@@ -63,11 +66,13 @@ public class ScreenBroadcastReceiver {
                     public void run() {
                         time++;
                         currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
+                        Log.d(TAG, "run: timerTime: " + time);
                     }
                 };
                 timer.schedule(timerTask, 1500000);
+
             }
-        }
+
     }
 
     /**
@@ -83,7 +88,6 @@ public class ScreenBroadcastReceiver {
             AlertViewModel alertViewModel = ViewModelProviders.of((FragmentActivity) context).get(AlertViewModel.class);
 
             setForTodayDateAlert(alertViewModel.getAllAlerts(), alertViewModel);
-
 
             return true;
         } else {
@@ -120,5 +124,15 @@ public class ScreenBroadcastReceiver {
             }
         }
 
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
+            Log.d(TAG, "onReceive: screenState: " + "false");
+        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
+            startTimer(context);
+            Log.d(TAG, "onReceive: screenState: " + "true");
+        }
     }
 }

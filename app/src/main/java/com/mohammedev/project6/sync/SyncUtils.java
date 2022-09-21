@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 
 import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -14,8 +14,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SyncUtils {
 
+    private static final String TAG = "SyncUtils";
+
     public static void startSync(Context context){
-        Intent intent = new Intent(context , SyncIntentService.class);
+        Intent intent = new Intent(context , ScreenOnOffService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             context.startForegroundService(intent);
         }else{
@@ -28,12 +30,17 @@ public class SyncUtils {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build();
 
-        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(SyncWorker.class , 1 , TimeUnit.SECONDS)
+        PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(SyncWorker.class , 5 , TimeUnit.SECONDS)
                 .setConstraints(constraints)
+                .addTag("Periodic")
+                .build();
+
+        OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(SyncWorker.class)
+                .addTag("worker")
                 .build();
 
         WorkManager workManager = WorkManager.getInstance(context);
-        workManager.enqueueUniquePeriodicWork("SyncWorker" , ExistingPeriodicWorkPolicy.KEEP , periodicWorkRequest);
+        workManager.enqueue(request);
 
     }
 }

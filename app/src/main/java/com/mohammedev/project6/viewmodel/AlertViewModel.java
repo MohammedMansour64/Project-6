@@ -21,12 +21,6 @@ public class AlertViewModel extends AndroidViewModel {
     private AlertsRepository repository;
 
 
-    private BroadcastReceiver mScreenUsabilityReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            SyncUtils.startSync(mContext);
-        }
-    };
 
 
     public LiveData<List<Alert>> getAllAlerts(){
@@ -56,7 +50,5 @@ public class AlertViewModel extends AndroidViewModel {
 
         mContext = application.getApplicationContext();
 
-        IntentFilter screenFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        mContext.registerReceiver(mScreenUsabilityReceiver , screenFilter);
     }
 }
