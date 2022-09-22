@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.mohammedev.project6.utils.AppExecutor;
+import com.mohammedev.project6.utils.CountUpTimer;
 import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 
@@ -52,7 +53,7 @@ public class ScreenOnOffService extends IntentService {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                ScreenOnOffReceiver.startTimer(getApplicationContext());
+                CountUpTimer.startTimer();
             }
         });
 
@@ -63,6 +64,8 @@ public class ScreenOnOffService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        Notification notification = NotificationUtils.getSyncNotification(getApplicationContext() , null);
+        startForeground(NotificationUtils.ALERT_NOTIFICATION_ID , notification);
         registerScreenStatusReceiver();
     }
 

@@ -1,27 +1,99 @@
 package com.mohammedev.project6.utils;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
-public abstract class CountUpTimer extends CountDownTimer {
-    private static final long INTERVAL_MS = 1000;
-    private final long duration;
+import java.util.Timer;
+import java.util.TimerTask;
 
-    public CountUpTimer(long durationMs, long countDownInterval) {
-        super(durationMs, countDownInterval);
-        this.duration = durationMs;
+public class CountUpTimer {
+
+    //TODO: for tommorow, fix the time achieved thingy, its buggy
+
+    private static final String TAG = "CountUpTimer";
+
+    private static int currentTimeInMinutes;
+    private static int time;
+    public static boolean timerOff;
+    public static int lastSavedTimeBeforeTurnOff = 0;
+
+    private static Timer timer = new Timer();
+
+    private static CountUpTimer sInstance;
+
+    private CountUpTimer() {
+
     }
 
-    public abstract void onTick(int second);
-
-    @Override
-    public void onTick(long l) {
-        int second = (int) ((duration - l) / 1000);
-        onTick(second);
+    public static CountUpTimer getInstance(){
+        if (sInstance == null){
+            sInstance = new CountUpTimer();
+        }
+        return sInstance;
     }
 
-    @Override
-    public void onFinish() {
-        onTick(duration / 1000);
+    public static void startTimer() {
+        if (timeAchieved() && !timerOff) {
+            time = 0;
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    time++;
+                    currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
+                    if (timeAchieved()){
+                        Log.d(TAG, "run: Time has been achieved");
+                    }
+                    Log.d(TAG, "startTimer: currentTime: " + time);
+                }
+            };
+
+            timer.scheduleAtFixedRate(timerTask, 1500 , 1000);
+        } else if(timerOff){
+            timer = new Timer();
+            time = lastSavedTimeBeforeTurnOff;
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    time++;
+                    currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
+                    if (timeAchieved()){
+                        Log.d(TAG, "run: Time has been achieved");
+                    }
+                    Log.d(TAG, "startTimer: currentTime: " + time);
+
+                }
+            };
+
+            timer.scheduleAtFixedRate(timerTask, 1500 , 1000);
+
+        }else {
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    time++;
+                    currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
+                    if (timeAchieved()){
+                        Log.d(TAG, "run: Time has been achieved");
+                    }
+                    Log.d(TAG, "startTimer: currentTime: " + time);
+
+                }
+            };
+
+            timer.scheduleAtFixedRate(timerTask, 1500 , 1000);
+        }
+
+    }
+
+    public static void pauseTimer(){
+        timer.cancel();
+
+        timerOff = true;
+        lastSavedTimeBeforeTurnOff = time;
+    }
+
+    public static boolean timeAchieved() {
+        return 1 - currentTimeInMinutes >= 0;
     }
 
 }

@@ -53,10 +53,6 @@ public class MainActivity extends AppCompatActivity {
                  super.onReceive(context, intent);
              }
          };
-
-
-        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        registerReceiver(screenOnOffReceiver, intentFilter);
     }
 
 
