@@ -25,49 +25,21 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ScreenOnOffReceiver";
 
-    /**
-     * TODO: CHANGE THIS METHOD PLACE, ITS NOT A GOOD PRACTICE FOR IT TO BE HERE.
-     * This method is used for inserting or updating an alert. First, it searches the db for all the Objects then,
-     * checks if there is an object that has today's date, On which he updates the alert with a new notification.
-     * else, he will create a new alert because he didn't register an alert for today. and the new object has 1 alert and today's date
-     * @param alerts the list where he searches for similar dates
-     */
-//    public static void setForTodayDateAlert(LiveData<List<Alert>> alerts, Context context) {
-//        Date c = Calendar.getInstance().getTime();
-//        System.out.println("Current time => " + c);
-//
-//        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-//        String todayDate = df.format(c);
-//
-//        AlertViewModel alertViewModel = ViewModelProviders.of((FragmentActivity) context).get(AlertViewModel.class);
-//
-//        for (int i = 0; i < alerts.getValue().size(); i++) {
-//
-//            if (alerts.getValue().get(i).getDayDate().contains(todayDate)) {
-//
-//
-//                setForTodayDateAlert(alertViewModel.getAllAlerts(), context);
-//
-//                alerts.getValue().get(i).setDayAlertCounter(alerts.getValue().get(i).getDayAlertCounter() + 1);
-//                alertViewModel.updateAlert(alerts.getValue().get(i));
-//
-//            } else {
-//
-//                Alert alert = new Alert(1, todayDate);
-//                alertViewModel.insertAlert(alert);
-//
-//            }
-//        }
-//
-//    }
+    public static final String ACTION_SCREEN_ON = "android.intent.action.SCREEN_ON";
+    public static final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
+
+    private static final CountUpTimer countUpTimer = CountUpTimer.getInstance();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
-            CountUpTimer.pauseTimer();
+            countUpTimer.pauseTimer();
             Log.d(TAG, "onReceive: screenState: " + "false");
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            CountUpTimer.startTimer();
+            countUpTimer.startTimer(context);
+            Log.d(TAG, "onReceive: screenState: " + "true");
+        } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON) && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+            countUpTimer.startTimer(context);
             Log.d(TAG, "onReceive: screenState: " + "true");
         }
     }

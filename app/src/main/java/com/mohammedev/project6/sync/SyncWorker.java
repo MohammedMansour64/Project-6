@@ -36,7 +36,6 @@ public class SyncWorker extends Worker {
         AppExecutor.getInstance().getMainThread().execute(new Runnable() {
             @Override
             public void run() {
-//                NotificationUtils.getSyncNotificationTwo(getApplicationContext());
                 Intent intent = new Intent(getApplicationContext() , ScreenOnOffService.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     getApplicationContext().startForegroundService(intent);

@@ -1,6 +1,8 @@
 package com.mohammedev.project6;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
@@ -20,6 +22,7 @@ import com.mohammedev.project6.sync.SyncUtils;
 import com.mohammedev.project6.sync.SyncWorker;
 import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenOnOffReceiver;
+import com.mohammedev.project6.viewmodel.AlertViewModel;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     TextView notificationsTextView;
     TextView weeklyAverageTextView;
     Button dailyDataBtn;
-    ScreenOnOffReceiver screenOnOffReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-         screenOnOffReceiver = new ScreenOnOffReceiver() {
-             @Override
-             public void onReceive(Context context, Intent intent) {
-                 super.onReceive(context, intent);
-             }
-         };
+
+
     }
 
 
