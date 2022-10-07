@@ -2,6 +2,7 @@ package com.mohammedev.project6.sync;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,7 @@ import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 public class ScreenOnOffService extends IntentService {
 
     private static final String TAG = "SyncIntentService";
+    BroadcastReceiver receiver;
 
     private ScreenOnOffReceiver mScreenReceiver;
 
@@ -31,17 +33,6 @@ public class ScreenOnOffService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-    }
-
-    private void registerScreenStatusReceiver(){
-
-        mScreenReceiver = new ScreenOnOffReceiver();
-
-        IntentFilter screenFilter = new IntentFilter();
-        screenFilter.addAction(Intent.ACTION_SCREEN_ON);
-        screenFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        screenFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
-        registerReceiver(mScreenReceiver , screenFilter);
     }
 
     private void unregisterScreenStatusReceiver() {
@@ -60,6 +51,7 @@ public class ScreenOnOffService extends IntentService {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
+
 
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH){
@@ -88,7 +80,6 @@ public class ScreenOnOffService extends IntentService {
         super.onCreate();
         Notification notification = NotificationUtils.getSyncNotification(getApplicationContext() , null);
         startForeground(NotificationUtils.ALERT_NOTIFICATION_ID , notification);
-        registerScreenStatusReceiver();
     }
 
     @Override

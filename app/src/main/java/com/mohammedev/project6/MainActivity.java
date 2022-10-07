@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mohammedev.project6.data.entity.Alert;
 import com.mohammedev.project6.sync.ScreenOnOffService;
 import com.mohammedev.project6.sync.SyncUtils;
 import com.mohammedev.project6.sync.SyncWorker;
@@ -43,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
         weeklyAverageTextView = findViewById(R.id.weekly_average_txt);
         dailyDataBtn = findViewById(R.id.daily_data_btn);
 
+        AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
 
-        SyncUtils.scheduleSync(this);
+
+
 
 
 

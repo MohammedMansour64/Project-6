@@ -13,6 +13,7 @@ import androidx.lifecycle.LiveData;
 import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
 import com.mohammedev.project6.sync.SyncUtils;
+import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class AlertViewModel extends AndroidViewModel {
 
     private AlertsRepository repository;
 
-
+    private ScreenOnOffReceiver mScreenReceiver;
 
 
     public LiveData<List<Alert>> getAllAlerts(){
@@ -32,6 +33,7 @@ public class AlertViewModel extends AndroidViewModel {
     }
 
     private Context mContext;
+
 
     public void insertAlert(Alert alert){
         repository.insertAlert(alert);
@@ -49,6 +51,17 @@ public class AlertViewModel extends AndroidViewModel {
         repository = AlertsRepository.getInstance(application.getApplicationContext());
 
         mContext = application.getApplicationContext();
+        registerScreenStatusReceiver();
+    }
 
+    private void registerScreenStatusReceiver(){
+
+        mScreenReceiver = new  ScreenOnOffReceiver(mContext);
+
+        IntentFilter screenFilter = new IntentFilter();
+        screenFilter.addAction(Intent.ACTION_SCREEN_ON);
+        screenFilter.addAction(Intent.ACTION_SCREEN_OFF);
+        screenFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
+        mContext.registerReceiver(mScreenReceiver , screenFilter);
     }
 }

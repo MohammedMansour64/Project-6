@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
 import com.mohammedev.project6.viewmodel.AlertViewModel;
 
@@ -26,7 +27,7 @@ public class CountUpTimer {
 
     private static final String TAG = "CountUpTimer";
 
-    private static final int ONE_SECOND_MILLIE_SECONDS = 100;
+    private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
     private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 1500;
 
     private static int currentTimeInMinutes;
@@ -64,31 +65,38 @@ public class CountUpTimer {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String todayDate = df.format(c);
 
-        AlertViewModel alertViewModel = ViewModelProviders.of((FragmentActivity) context).get(AlertViewModel.class);
 
-        LiveData<List<Alert>> alerts = alertViewModel.getAllAlerts();
+        AlertsRepository alertsRepository = AlertsRepository.getInstance(context);
 
-        for (int i = 0; i < alerts.getValue().size(); i++) {
+        LiveData<List<Alert>> alerts = alertsRepository.getAlerts();
+        if (alerts.getValue() != null){
+            for (int i = 0; i < alerts.getValue().size(); i++) {
 
-            if (alerts.getValue().get(i).getDayDate().contains(todayDate)) {
-                alerts.getValue().get(i).setDayAlertCounter(alerts.getValue().get(i).getDayAlertCounter() + 1);
-                alertViewModel.updateAlert(alerts.getValue().get(i));
+                if (alerts.getValue().get(i).getDayDate().contains(todayDate)) {
+                    alerts.getValue().get(i).setDayAlertCounter(alerts.getValue().get(i).getDayAlertCounter() + 1);
+                    alertsRepository.updateAlert(alerts.getValue().get(i));
 
-            } else {
+                } else {
 
-                Alert alert = new Alert(1, todayDate);
-                alertViewModel.insertAlert(alert);
-                Log.d(TAG, "setForTodayDateAlert: an alert has been added");
+                    Alert alert = new Alert(1, todayDate);
+                    alertsRepository.insertAlert(alert);
+                    Log.d(TAG, "setForTodayDateAlert: an alert has been added");
 
+                }
             }
+        }else{
+            Alert alert = new Alert(1, todayDate);
+            alertsRepository.insertAlert(alert);
+            Log.d(TAG, "setForTodayDateAlert: an alert has been added");
         }
 
+
+        startTimer(context);
     }
 
     public static void startTimer(Context context) {
-        if (timeAchieved(context) && !timerOff) {
-
-            time = 0;
+        timerOff = false;
+        if (!timeAchieved(context)) {
             TimerTask timerTask = new TimerTask() {
                 @Override
                 public void run() {
@@ -102,53 +110,28 @@ public class CountUpTimer {
             };
 
             timer.scheduleAtFixedRate(timerTask, TWENTY_FIVE_MINUTES_IN_SECONDS , ONE_SECOND_MILLIE_SECONDS);
-        } else if(timerOff){
-            timer = new Timer();
-            time = lastSavedTimeBeforeTurnOff;
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    time++;
-                    currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
-                    if (timeAchieved(context)){
-                        Log.d(TAG, "run: Time has been achieved");
-                    }
-                    Log.d(TAG, "startTimer: currentTimeTwo: " + time);
-
-                }
-            };
-
-            timer.scheduleAtFixedRate(timerTask, TWENTY_FIVE_MINUTES_IN_SECONDS , ONE_SECOND_MILLIE_SECONDS);
-
-        }else {
-            TimerTask timerTask = new TimerTask() {
-                @Override
-                public void run() {
-                    time++;
-                    currentTimeInMinutes = ((Math.round(time) % 86400) % 3600) / 60;
-                    if (timeAchieved(context)){
-                        Log.d(TAG, "run: Time has been achieved");
-                    }
-                    Log.d(TAG, "startTimer: currentTimeThree: " + time);
-
-                }
-            };
-
-            timer.scheduleAtFixedRate(timerTask, TWENTY_FIVE_MINUTES_IN_SECONDS , ONE_SECOND_MILLIE_SECONDS);
         }
 
     }
 
     public static void pauseTimer(){
+        Log.d(TAG, "pauseTimer: Paused");
         timer.cancel();
 
         timerOff = true;
+        timer = new Timer();
         lastSavedTimeBeforeTurnOff = time;
+    }
+
+    public static void restartTimer(){
+        timer.cancel();
     }
 
     public static boolean timeAchieved(Context context) {
         if (1 - currentTimeInMinutes <= 0){
-            System.out.println("tewst");
+            time = 0;
+            lastSavedTimeBeforeTurnOff = 0;
+            currentTimeInMinutes = 0;
             setForTodayDateAlert(context);
         }
         return 1 - currentTimeInMinutes <= 0;
