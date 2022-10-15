@@ -1,5 +1,6 @@
 package com.mohammedev.project6.Background;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -17,19 +18,17 @@ public class AlertsRepository {
 
     private final AppDatabase db;
 
-    private static AlertsRepository sInstance;
 
-    private AlertsRepository(Context context) {
-        db = AppDatabase.getInstance(context);
+    public AlertsRepository(Application application) {
+        db = AppDatabase.getInstance(application);
         mAlertsDao = db.alertsDao();
-        SyncUtils.scheduleSync(context);
+        SyncUtils.scheduleSync(application);
     }
 
-    public static AlertsRepository getInstance(Context context){
-        if (sInstance == null){
-            sInstance = new AlertsRepository(context.getApplicationContext());
-        }
-        return sInstance;
+
+    public List<Alert> getAlertTwo(){
+        final List<Alert> alertLiveData = db.alertsDao().getAlertsTwo();
+        return alertLiveData;
     }
 
     public LiveData<Alert> getAlertLiveData(){
@@ -38,7 +37,7 @@ public class AlertsRepository {
     }
 
     public LiveData<List<Alert>> getAlerts(){
-        LiveData<List<Alert>> allAlerts = db.alertsDao().getAlerts();
+        LiveData<List<Alert>> allAlerts = mAlertsDao.getAlerts();
         return allAlerts;
     }
 

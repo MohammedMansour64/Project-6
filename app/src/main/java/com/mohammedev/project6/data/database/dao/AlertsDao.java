@@ -14,11 +14,14 @@ import java.util.List;
 @Dao
 public interface AlertsDao {
 
-    @Query("SELECT * FROM alerts")
+    @Query("SELECT * FROM alerts LIMIT 1")
     LiveData<List<Alert>> getAlerts();
 
     @Query("SELECT * FROM alerts LIMIT 1")
     LiveData<Alert> getAlert();
+
+    @Query("SELECT * FROM alerts LIMIT 1")
+    List<Alert> getAlertsTwo();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAlert(Alert alert);

@@ -7,8 +7,9 @@ import androidx.room.PrimaryKey;
 public class Alert {
 
     @PrimaryKey
-    private int id = 0;
+    private int id;
     private int dayAlertCounter;
+    public int dummy;
 
     private String dayDate;
 
@@ -39,5 +40,14 @@ public class Alert {
 
     public void setDayDate(String dayDate) {
         this.dayDate = dayDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "id=" + id +
+                ", dayAlertCounter=" + dayAlertCounter +
+                ", dayDate='" + dayDate + '\'' +
+                '}';
     }
 }

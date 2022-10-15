@@ -48,15 +48,14 @@ public class AlertViewModel extends AndroidViewModel {
 
     public AlertViewModel(@NonNull Application application) {
         super(application);
-        repository = AlertsRepository.getInstance(application.getApplicationContext());
+        repository = new AlertsRepository(application);
 
         mContext = application.getApplicationContext();
+        mScreenReceiver = new ScreenOnOffReceiver(application);
         registerScreenStatusReceiver();
     }
 
     private void registerScreenStatusReceiver(){
-
-        mScreenReceiver = new  ScreenOnOffReceiver(mContext);
 
         IntentFilter screenFilter = new IntentFilter();
         screenFilter.addAction(Intent.ACTION_SCREEN_ON);

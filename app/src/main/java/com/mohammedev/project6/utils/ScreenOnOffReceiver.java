@@ -1,5 +1,6 @@
 package com.mohammedev.project6.utils;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +25,10 @@ import java.util.TimerTask;
 
 public class ScreenOnOffReceiver extends BroadcastReceiver {
 
-    private Context mContext;
+    CountUpTimer countUpTimer;
 
-    public ScreenOnOffReceiver(Context context) {
-        this.mContext = context;
+    public ScreenOnOffReceiver(Application application) {
+        countUpTimer = CountUpTimer.getInstance(application);
     }
 
 
@@ -37,7 +38,6 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
     public static final String ACTION_SCREEN_ON = "android.intent.action.SCREEN_ON";
     public static final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
 
-    private static final CountUpTimer countUpTimer = CountUpTimer.getInstance();
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -46,10 +46,10 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
             countUpTimer.pauseTimer();
             Log.d(TAG, "onReceive: screenState: " + "false");
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON)) {
-            countUpTimer.startTimer(mContext);
+            countUpTimer.startTimer();
             Log.d(TAG, "onReceive: screenState: " + "true");
         } else if (intent.getAction().equals(Intent.ACTION_SCREEN_ON) && intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
-            countUpTimer.startTimer(mContext);
+            countUpTimer.startTimer();
             Log.d(TAG, "onReceive: screenState: " + "true");
         }
     }

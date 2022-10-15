@@ -2,6 +2,7 @@ package com.mohammedev.project6;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
@@ -25,6 +26,8 @@ import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 import com.mohammedev.project6.viewmodel.AlertViewModel;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
         dailyDataBtn = findViewById(R.id.daily_data_btn);
 
         AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
+
+        alertViewModel.getAllAlerts().observe(this, new Observer<List<Alert>>() {
+            @Override
+            public void onChanged(List<Alert> alerts) {
+                for (int i = 0; i < alerts.size(); i++){
+                    System.out.println("all might" + alerts.get(i).toString());
+                }
+            }
+        });
 
 
 
