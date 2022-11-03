@@ -15,13 +15,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
 import com.mohammedev.project6.sync.ScreenOnOffService;
 import com.mohammedev.project6.sync.SyncUtils;
 import com.mohammedev.project6.sync.SyncWorker;
+import com.mohammedev.project6.utils.AppExecutor;
 import com.mohammedev.project6.utils.NotificationUtils;
 import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 import com.mohammedev.project6.viewmodel.AlertViewModel;
@@ -53,17 +56,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Alert> alerts) {
                 for (int i = 0; i < alerts.size(); i++){
-                    System.out.println("all might" + alerts.get(i).toString());
+                    System.out.println("all mights" + alerts.get(i).toString());
                 }
             }
         });
-
-
-
-
-
-
-
 
 
     }

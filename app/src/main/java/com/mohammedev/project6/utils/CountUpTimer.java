@@ -1,6 +1,7 @@
 package com.mohammedev.project6.utils;
 
 import android.app.Application;
+import android.nfc.Tag;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -72,26 +73,33 @@ public class CountUpTimer {
             @Override
             public void run() {
                 List<Alert> alerts = alertsRepository.getAlertTwo();
-                if (alerts != null){
+                if (alerts != null && alerts.size() >= 1){
+                    System.out.println("alerts size: " + alerts.size());
                     for (int i = 0; i < alerts.size(); i++) {
 
                         if (alerts.get(i).getDayDate().contains(todayDate)) {
                             alerts.get(i).setDayAlertCounter(alerts.get(i).getDayAlertCounter() + 1);
                             alertsRepository.updateAlert(alerts.get(i));
-
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIf: " + alerts.get(i).toString());
                         } else {
 
                             Alert alert = new Alert(1, todayDate);
                             alertsRepository.insertAlert(alert);
                             Log.d(TAG, "setForTodayDateAlertOne: an alert has been added");
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIfElse: " + alert);
 
                         }
+                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlertTwo().size());
+
                     }
                 }else{
                     Alert alert = new Alert(1, todayDate);
                     alertsRepository.insertAlert(alert);
                     Log.d(TAG, "setForTodayDateAlertTwo: an alert has been added");
                     Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlertTwo().size());
+                    Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlerts().getValue().size());
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: FirstIfElse: " + alert);
+
                 }
 
                 restartTimer();
