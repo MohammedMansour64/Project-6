@@ -52,14 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
 
-        alertViewModel.getAllAlerts().observe(this, new Observer<List<Alert>>() {
-            @Override
-            public void onChanged(List<Alert> alerts) {
-                for (int i = 0; i < alerts.size(); i++){
-                    System.out.println("all mights" + alerts.get(i).toString());
-                }
-            }
-        });
+
 
 
     }

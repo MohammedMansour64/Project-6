@@ -15,13 +15,7 @@ import java.util.List;
 public interface AlertsDao {
 
     @Query("SELECT * FROM alerts LIMIT 1")
-    LiveData<List<Alert>> getAlerts();
-
-    @Query("SELECT * FROM alerts LIMIT 1")
-    LiveData<Alert> getAlert();
-
-    @Query("SELECT * FROM alerts LIMIT 1")
-    List<Alert> getAlertsTwo();
+    List<Alert> getAlerts();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAlert(Alert alert);

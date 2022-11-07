@@ -1,8 +1,11 @@
 package com.mohammedev.project6.Background;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -26,20 +29,12 @@ public class AlertsRepository {
     }
 
 
-    public List<Alert> getAlertTwo(){
-        final List<Alert> alertLiveData = db.alertsDao().getAlertsTwo();
+
+    public List<Alert> getAlerts(){
+        final List<Alert> alertLiveData = db.alertsDao().getAlerts();
         return alertLiveData;
     }
 
-    public LiveData<Alert> getAlertLiveData(){
-        final LiveData<Alert> alertLiveData = db.alertsDao().getAlert();
-        return alertLiveData;
-    }
-
-    public LiveData<List<Alert>> getAlerts(){
-        LiveData<List<Alert>> allAlerts = mAlertsDao.getAlerts();
-        return allAlerts;
-    }
 
     public void insertAlert(Alert alert){
         new InsertAlertAsyncTask(mAlertsDao).execute(alert);
@@ -59,6 +54,7 @@ public class AlertsRepository {
         @Override
         protected Void doInBackground(Alert... alerts) {
             mAlertsDao.insertAlert(alerts[0]);
+            Log.d(TAG, "doInBackground: Number Of Alerts:" + alerts.length);
 
             return null;
         }

@@ -1,10 +1,9 @@
 package com.mohammedev.project6.utils;
 
 import android.app.Application;
-import android.nfc.Tag;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
@@ -19,11 +18,11 @@ import java.util.TimerTask;
 
 public class CountUpTimer {
 
-    //TODO: for tomorrow, fix the time achieved thingy, its buggy
+    //TODO: next time, fix the alert insert method, cuz its not adding to the list. the list stays always at 1 element inside of it and does not add up.
 
     private static final String TAG = "CountUpTimer";
 
-    private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
+    private static final int ONE_SECOND_MILLIE_SECONDS = 100;
     private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 1500;
 
     private static int currentTimeInMinutes;
@@ -68,43 +67,46 @@ public class CountUpTimer {
 
         System.out.println("Current time => " + todayDate);
 
-
         mAppExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<Alert> alerts = alertsRepository.getAlertTwo();
-                if (alerts != null && alerts.size() >= 1){
-                    System.out.println("alerts size: " + alerts.size());
+                List<Alert> alerts = alertsRepository.getAlerts();
+                if (alerts != null && !alerts.isEmpty()) {
                     for (int i = 0; i < alerts.size(); i++) {
 
                         if (alerts.get(i).getDayDate().contains(todayDate)) {
                             alerts.get(i).setDayAlertCounter(alerts.get(i).getDayAlertCounter() + 1);
                             alertsRepository.updateAlert(alerts.get(i));
+
+                            restartTimer();
+
                             Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIf: " + alerts.get(i).toString());
                         } else {
 
                             Alert alert = new Alert(1, todayDate);
                             alertsRepository.insertAlert(alert);
+                            restartTimer();
                             Log.d(TAG, "setForTodayDateAlertOne: an alert has been added");
                             Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIfElse: " + alert);
 
                         }
-                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlertTwo().size());
+                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
 
                     }
-                }else{
+                } else {
                     Alert alert = new Alert(1, todayDate);
                     alertsRepository.insertAlert(alert);
+                    restartTimer();
                     Log.d(TAG, "setForTodayDateAlertTwo: an alert has been added");
-                    Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlertTwo().size());
-                    Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alertsRepository.getAlerts().getValue().size());
+                    if (alerts != null) {
+                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
+                    }
                     Log.d(TAG, "CountUpTimer: setForTodayDateAlert: FirstIfElse: " + alert);
 
                 }
-
-                restartTimer();
             }
         });
+
 
     }
 

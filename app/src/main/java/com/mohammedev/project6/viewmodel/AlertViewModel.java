@@ -1,7 +1,6 @@
 package com.mohammedev.project6.viewmodel;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,7 +11,6 @@ import androidx.lifecycle.LiveData;
 
 import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
-import com.mohammedev.project6.sync.SyncUtils;
 import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 
 import java.util.List;
@@ -24,12 +22,10 @@ public class AlertViewModel extends AndroidViewModel {
     private ScreenOnOffReceiver mScreenReceiver;
 
 
-    public LiveData<List<Alert>> getAllAlerts(){
-        return repository.getAlerts();
-    }
 
-    public LiveData<Alert> getAlertLiveData(){
-        return repository.getAlertLiveData();
+
+    public List<Alert> getAlertsLiveData(){
+        return repository.getAlerts();
     }
 
     private Context mContext;
