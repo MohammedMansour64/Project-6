@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "alerts")
 public class Alert {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private int dayAlertCounter;
     public int dummy;

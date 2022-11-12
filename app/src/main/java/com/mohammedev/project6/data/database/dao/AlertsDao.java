@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface AlertsDao {
 
-    @Query("SELECT * FROM alerts LIMIT 1")
+    @Query("SELECT * FROM alerts")
     List<Alert> getAlerts();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

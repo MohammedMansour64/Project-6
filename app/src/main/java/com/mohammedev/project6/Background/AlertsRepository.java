@@ -54,7 +54,6 @@ public class AlertsRepository {
         @Override
         protected Void doInBackground(Alert... alerts) {
             mAlertsDao.insertAlert(alerts[0]);
-            Log.d(TAG, "doInBackground: Number Of Alerts:" + alerts.length);
 
             return null;
         }
