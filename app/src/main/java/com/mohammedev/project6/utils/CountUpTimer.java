@@ -70,42 +70,40 @@ public class CountUpTimer {
             @Override
             public void run() {
                 List<Alert> alerts = alertsRepository.getAlerts();
-                alertsRepository.insertAlert(new Alert(0 , "fast"));
-                Log.d(TAG, "run: InsertTester: Alerts: " + alerts.size());
 
-//                if (alerts != null && !alerts.isEmpty()) {
-//                    for (int i = 0; i < alerts.size(); i++) {
-//
-//                        if (alerts.get(i).getDayDate().contains(todayDate)) {
-//                            alerts.get(i).setDayAlertCounter(alerts.get(i).getDayAlertCounter() + 1);
-//                            alertsRepository.updateAlert(alerts.get(i));
-//
-//                            restartTimer();
-//
-//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIf: " + alerts.get(i).toString());
-//                        } else {
-//
-//                            Alert alert = new Alert(1, todayDate);
-//                            alertsRepository.insertAlert(alert);
-//                            restartTimer();
-//                            Log.d(TAG, "setForTodayDateAlertOne: an alert has been added");
-//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIfElse: " + alert);
-//
-//                        }
-//                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
-//
-//                    }
-//                } else {
-//                    Alert alert = new Alert(1, todayDate);
-//                    alertsRepository.insertAlert(alert);
-//                    restartTimer();
-//                    Log.d(TAG, "setForTodayDateAlertTwo: an alert has been added");
-//                    if (alerts != null) {
-//                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
-//                    }
-//                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: FirstIfElse: " + alert);
-//
-//                }
+                if (alerts != null && !alerts.isEmpty()) {
+                    for (int i = 0; i < alerts.size(); i++) {
+
+                        if (alerts.get(i).getDayDate().contains(todayDate)) {
+                            alerts.get(i).setDayAlertCounter(alerts.get(i).getDayAlertCounter() + 1);
+                            alertsRepository.updateAlert(alerts.get(i));
+
+                            restartTimer();
+
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIf: " + alerts.get(i).toString());
+                        } else if (!(alerts.get(i).getDayDate().contains(todayDate))){
+
+                            Alert alert = new Alert(1, todayDate);
+                            alertsRepository.insertAlert(alert);
+                            restartTimer();
+                            Log.d(TAG, "setForTodayDateAlertOne: an alert has been added");
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIfElse: " + alert);
+
+                        }
+                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
+
+                    }
+                } else {
+                    Alert alert = new Alert(1, todayDate);
+                    alertsRepository.insertAlert(alert);
+                    restartTimer();
+                    Log.d(TAG, "setForTodayDateAlertTwo: an alert has been added");
+                    if (alerts != null) {
+                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
+                    }
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: FirstIfElse: " + alert);
+
+                }
             }
         });
 
