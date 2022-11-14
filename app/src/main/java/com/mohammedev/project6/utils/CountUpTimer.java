@@ -20,8 +20,7 @@ import java.util.TimerTask;
 
 public class CountUpTimer {
 
-    //TODO: next time, fix the alert insert method, cuz its not adding to the list. the list stays always at 1 element inside of it and does not add up.
-
+    //TODO: Fix timer when at launch, it starts twice. And on turning the screen back on it also starts twice.
     private static final String TAG = "CountUpTimer";
 
     private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
@@ -156,7 +155,7 @@ public class CountUpTimer {
     }
 
     public static boolean timeAchieved() {
-        if (1 - currentTimeInMinutes <= 0){
+        if (25 - currentTimeInMinutes <= 0){
             time = 0;
             lastSavedTimeBeforeTurnOff = 0;
             currentTimeInMinutes = 0;
