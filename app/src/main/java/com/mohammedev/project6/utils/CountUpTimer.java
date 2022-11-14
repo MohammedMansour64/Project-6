@@ -9,10 +9,12 @@ import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,7 +24,7 @@ public class CountUpTimer {
 
     private static final String TAG = "CountUpTimer";
 
-    private static final int ONE_SECOND_MILLIE_SECONDS = 100;
+    private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
     private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 1500;
 
     private static int currentTimeInMinutes;
@@ -59,6 +61,7 @@ public class CountUpTimer {
      * else, he will create a new alert because he didn't register an alert for today. and the new object has 1 alert and today's date
      */
     public static void setForTodayDateAlert() {
+
         Date c = Calendar.getInstance().getTime();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
@@ -69,41 +72,50 @@ public class CountUpTimer {
         mAppExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                List<Alert> alerts = alertsRepository.getAlerts();
 
+                Date c = Calendar.getInstance().getTime();
+
+                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                String todayDate = df.format(c);
+
+                System.out.println("Current time => " + todayDate);
+
+                List<Alert> alerts = alertsRepository.getAlerts();
+                boolean isItContainingTodayDate = false;
                 if (alerts != null && !alerts.isEmpty()) {
                     for (int i = 0; i < alerts.size(); i++) {
 
-                        if (alerts.get(i).getDayDate().contains(todayDate)) {
-                            alerts.get(i).setDayAlertCounter(alerts.get(i).getDayAlertCounter() + 1);
-                            alertsRepository.updateAlert(alerts.get(i));
 
+                        if (alerts.get(i).getDayDate().contains(todayDate)){
+                            isItContainingTodayDate = true;
+                            Alert alert = alerts.get(i);
+                            alerts.get(i).setDayAlertCounter(alert.getDayAlertCounter() + 1);
+                            alertsRepository.updateAlert(alert);
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
+                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
                             restartTimer();
-
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIf: " + alerts.get(i).toString());
-                        } else if (!(alerts.get(i).getDayDate().contains(todayDate))){
-
-                            Alert alert = new Alert(1, todayDate);
-                            alertsRepository.insertAlert(alert);
-                            restartTimer();
-                            Log.d(TAG, "setForTodayDateAlertOne: an alert has been added");
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: SecondIfElse: " + alert);
 
                         }
-                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
-
                     }
-                } else {
+
+                    if (!isItContainingTodayDate){
+                        Alert alert = new Alert(1, todayDate);
+                        alertsRepository.insertAlert(alert);
+                        restartTimer();
+                        Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
+                        Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
+                    }
+                }else{
                     Alert alert = new Alert(1, todayDate);
                     alertsRepository.insertAlert(alert);
                     restartTimer();
-                    Log.d(TAG, "setForTodayDateAlertTwo: an alert has been added");
+                    Log.d(TAG, "setForTodayDateAlertTwo: Adding a fresh data...");
                     if (alerts != null) {
                         Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
                     }
-                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: FirstIfElse: " + alert);
-
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
                 }
+
             }
         });
 
@@ -136,7 +148,6 @@ public class CountUpTimer {
     }
 
     public static void pauseTimer(){
-        Log.d(TAG, "pauseTimer: Paused");
         timer.cancel();
 
         timerOff = true;
