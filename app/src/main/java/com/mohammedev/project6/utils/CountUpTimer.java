@@ -20,7 +20,6 @@ import java.util.TimerTask;
 
 public class CountUpTimer {
 
-    //TODO: Fix timer when at launch, it starts twice. And on turning the screen back on it also starts twice.
     private static final String TAG = "CountUpTimer";
 
     private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
@@ -42,7 +41,6 @@ public class CountUpTimer {
     private CountUpTimer(Application application) {
         alertsRepository = new AlertsRepository(application);
         mAppExecutor = AppExecutor.getInstance();
-
     }
 
     public static CountUpTimer getInstance(Application application){
@@ -161,7 +159,7 @@ public class CountUpTimer {
             currentTimeInMinutes = 0;
             setForTodayDateAlert();
         }
-        return 1 - currentTimeInMinutes <= 0;
+        return 25 - currentTimeInMinutes <= 0;
     }
 
 }

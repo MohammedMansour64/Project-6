@@ -52,22 +52,6 @@ public class ScreenOnOffService extends IntentService {
             @Override
             public void run() {
 
-
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH){
-
-                    if (checkScreenOffOnOverAPI20()){
-                        CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
-                        countUpTimer.startTimer();
-                    }
-
-                }else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH){
-                    if (checkScreenOffOnUnderAPI20()){
-                        CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
-                        countUpTimer.startTimer();
-                    }
-                }
-
             }
         });
 
@@ -80,6 +64,20 @@ public class ScreenOnOffService extends IntentService {
         super.onCreate();
         Notification notification = NotificationUtils.getSyncNotification(getApplicationContext() , null);
         startForeground(NotificationUtils.ALERT_NOTIFICATION_ID , notification);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH){
+
+            if (checkScreenOffOnOverAPI20()){
+                CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
+                countUpTimer.startTimer();
+            }
+
+        }else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH){
+            if (checkScreenOffOnUnderAPI20()){
+                CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
+                countUpTimer.startTimer();
+            }
+        }
     }
 
     @Override

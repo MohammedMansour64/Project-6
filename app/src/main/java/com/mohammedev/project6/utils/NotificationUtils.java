@@ -51,14 +51,13 @@ public class NotificationUtils {
 
 
     public static Notification getSyncNotification(Context context , Alert alert){
-        String notificationTitle = "Alert test";
-        String notificationText = "Alert test";
+        String notificationTitle = "We Care";
+
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context , USAGE_ALERT_CHANNEL_ID)
                 .setOngoing(true)
                 .setContentTitle(notificationTitle)
-                .setContentText(notificationText)
-                .setSmallIcon(R.drawable.circle);
+                .setSmallIcon(R.drawable.app_icon);
 
         return notificationBuilder.build();
 
