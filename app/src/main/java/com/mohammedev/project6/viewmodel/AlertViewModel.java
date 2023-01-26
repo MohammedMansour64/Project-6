@@ -24,8 +24,8 @@ public class AlertViewModel extends AndroidViewModel {
 
 
 
-    public List<Alert> getAlertsLiveData(){
-        return repository.getAlerts();
+    public LiveData<List<Alert>> getAlertsLiveData(){
+        return repository.getAlertsLiveData();
     }
 
     private Context mContext;

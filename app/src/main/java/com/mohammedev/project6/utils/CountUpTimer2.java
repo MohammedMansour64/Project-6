@@ -3,6 +3,7 @@ package com.mohammedev.project6.utils;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.mohammedev.project6.Background.AlertsRepository;
@@ -71,13 +72,12 @@ public class CountUpTimer2 {
             public void run() {
 
                 Date c = Calendar.getInstance().getTime();
-
                 SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                 String todayDate = df.format(c);
-
                 System.out.println("Current time => " + todayDate);
 
-                List<Alert> alerts = alertsRepository.getAlerts();
+                LiveData<List<Alert>> alertsLiveData = alertsRepository.getAlertsLiveData();
+                List<Alert> alerts = alertsLiveData.getValue();
                 boolean isItContainingTodayDate = false;
                 if (alerts != null && !alerts.isEmpty()) {
                     for (int i = 0; i < alerts.size(); i++) {

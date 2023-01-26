@@ -3,6 +3,7 @@ package com.mohammedev.project6.utils;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.mohammedev.project6.Background.AlertsRepository;
@@ -77,11 +78,13 @@ public class CountUpTimer {
 
                 System.out.println("Current time => " + todayDate);
 
-                List<Alert> alerts = alertsRepository.getAlerts();
+                LiveData<List<Alert>> alertsLiveData = alertsRepository.getAlertsLiveData();
+                List<Alert> alerts = alertsLiveData.getValue();
+                //TODO: next time check the variable above, its value must be atleast 15 objects.
                 boolean isItContainingTodayDate = false;
+
                 if (alerts != null && !alerts.isEmpty()) {
                     for (int i = 0; i < alerts.size(); i++) {
-
 
                         if (alerts.get(i).getDayDate().contains(todayDate)){
                             isItContainingTodayDate = true;
@@ -159,7 +162,7 @@ public class CountUpTimer {
             currentTimeInMinutes = 0;
             setForTodayDateAlert();
         }
-        return 25 - currentTimeInMinutes <= 0;
+        return 1 - currentTimeInMinutes <= 0;
     }
 
 }

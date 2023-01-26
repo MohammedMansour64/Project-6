@@ -35,6 +35,11 @@ public class AlertsRepository {
         return alertLiveData;
     }
 
+    public LiveData<List<Alert>> getAlertsLiveData(){
+        final LiveData<List<Alert>> alertLiveData = db.alertsDao().getAlertsLiveData();
+        return alertLiveData;
+    }
+
 
     public void insertAlert(Alert alert){
         new InsertAlertAsyncTask(mAlertsDao).execute(alert);

@@ -2,6 +2,7 @@ package com.mohammedev.project6;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.work.Constraints;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MAIN_ACTIVITY";
 
     //TODO: setting the content on the views is not working, try to do it with viewmodel observe, try viewmodel on service one more time.
     //TODO: i forgot how to databind, learn that too.
@@ -58,16 +60,25 @@ public class MainActivity extends AppCompatActivity {
         dailyDataBtn = findViewById(R.id.daily_data_btn);
         AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
 
-        appExecutor.getDiskIO().execute(new Runnable() {
+        alertViewModel.getAlertsLiveData().observe(this, new Observer<List<Alert>>() {
             @Override
-            public void run() {
+            public void onChanged(List<Alert> alerts) {
+                Log.d(TAG, "onChanged: " +
+                        "alerts:" +
+                        alerts.toString());
 
+                notificationsTextView.setText(String.valueOf(alerts.get(alerts.size() - 1).getDayAlertCounter()));
 
-                List<Alert> alerts = alertViewModel.getAlertsLiveData();
-
-                notificationsTextView.setText(alerts.get(alerts.size() - 1).getDayAlertCounter());
             }
         });
+
+//        appExecutor.getDiskIO().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//            }
+//        });
 
 
 

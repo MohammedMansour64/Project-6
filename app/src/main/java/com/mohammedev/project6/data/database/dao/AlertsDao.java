@@ -17,6 +17,9 @@ public interface AlertsDao {
     @Query("SELECT * FROM alerts")
     List<Alert> getAlerts();
 
+    @Query("SELECT * FROM alerts")
+    LiveData<List<Alert>> getAlertsLiveData();
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAlert(Alert alert);
 
