@@ -18,12 +18,12 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CountUpTimer {
+public class CountUpTimer2 {
 
-    private static final String TAG = "CountUpTimer";
+    private static final String TAG = "CountUpTimer2";
 
     private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
-    private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 60;
+    private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 1500;
 
     private static int currentTimeInMinutes;
     private static int time;
@@ -32,20 +32,20 @@ public class CountUpTimer {
 
     public static AlertsRepository alertsRepository;
 
-    private static CountUpTimer sInstance;
+    private static CountUpTimer2 sInstance;
 
     private static Timer timer = new Timer();
 
     public static AppExecutor mAppExecutor;
 
-    private CountUpTimer(Application application) {
+    private CountUpTimer2(Application application) {
         alertsRepository = new AlertsRepository(application);
         mAppExecutor = AppExecutor.getInstance();
     }
 
-    public static CountUpTimer getInstance(Application application){
+    public static CountUpTimer2 getInstance(Application application){
         if (sInstance == null){
-            sInstance = new CountUpTimer(application);
+            sInstance = new CountUpTimer2(application);
         }
         return sInstance;
     }
@@ -88,8 +88,8 @@ public class CountUpTimer {
                             Alert alert = alerts.get(i);
                             alerts.get(i).setDayAlertCounter(alert.getDayAlertCounter() + 1);
                             alertsRepository.updateAlert(alert);
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
+                            Log.d(TAG, "CountUpTimer2: setForTodayDateAlert: Updating data...");
+                            Log.d(TAG, "CountUpTimer2: setForTodayDateAlert: New Data:" + alert);
                             restartTimer();
 
                         }
@@ -100,7 +100,7 @@ public class CountUpTimer {
                         alertsRepository.insertAlert(alert);
                         restartTimer();
                         Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
-                        Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
+                        Log.d(TAG, "CountUpTimer2: setForTodayDateAlert: New Data: " + alert);
                     }
                 }else{
                     Alert alert = new Alert(1, todayDate);
@@ -110,7 +110,7 @@ public class CountUpTimer {
                     if (alerts != null) {
                         Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
                     }
-                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
+                    Log.d(TAG, "CountUpTimer2: setForTodayDateAlert: New Data: : " + alert);
                 }
 
             }
@@ -153,7 +153,7 @@ public class CountUpTimer {
     }
 
     public static boolean timeAchieved() {
-        if (1 - currentTimeInMinutes <= 0){
+        if (25 - currentTimeInMinutes <= 0){
             time = 0;
             lastSavedTimeBeforeTurnOff = 0;
             currentTimeInMinutes = 0;
