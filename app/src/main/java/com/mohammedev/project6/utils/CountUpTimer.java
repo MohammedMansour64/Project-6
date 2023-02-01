@@ -30,6 +30,7 @@ public class CountUpTimer {
     private static int time;
     public static boolean timerOff;
     public static int lastSavedTimeBeforeTurnOff = 0;
+    public static int matchedDateIndex;
 
     public static AlertsRepository alertsRepository;
 
@@ -71,8 +72,8 @@ public class CountUpTimer {
             @Override
             public void run() {
 
+                // get instance of today's date
                 Date c = Calendar.getInstance().getTime();
-
                 SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                 String todayDate = df.format(c);
 
@@ -80,32 +81,24 @@ public class CountUpTimer {
 
                 LiveData<List<Alert>> alertsLiveData = alertsRepository.getAlertsLiveData();
                 List<Alert> alerts = alertsLiveData.getValue();
-                //TODO: next time check the variable above, its value must be atleast 15 objects.
-                boolean isItContainingTodayDate = false;
 
-                if (alerts != null && !alerts.isEmpty()) {
-                    for (int i = 0; i < alerts.size(); i++) {
+                int matchedDateResult = searchForMatchingDates(alerts , todayDate);
+//                boolean isItContainingTodayDate = false;
 
-                        if (alerts.get(i).getDayDate().contains(todayDate)){
-                            isItContainingTodayDate = true;
-                            Alert alert = alerts.get(i);
-                            alerts.get(i).setDayAlertCounter(alert.getDayAlertCounter() + 1);
-                            alertsRepository.updateAlert(alert);
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
-                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
-                            restartTimer();
-
-                        }
-                    }
-
-                    if (!isItContainingTodayDate){
-                        Alert alert = new Alert(1, todayDate);
-                        alertsRepository.insertAlert(alert);
-                        restartTimer();
-                        Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
-                        Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
-                    }
-                }else{
+                if (matchedDateResult == 1){
+                    Alert alert = alerts.get(matchedDateIndex);
+                    alerts.get(matchedDateIndex).setDayAlertCounter(alert.getDayAlertCounter() + 1);
+                    alertsRepository.updateAlert(alert);
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
+                    restartTimer();
+                }else if (matchedDateResult == 0){
+                    Alert alert = new Alert(1, todayDate);
+                    alertsRepository.insertAlert(alert);
+                    restartTimer();
+                    Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
+                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
+                } else{
                     Alert alert = new Alert(1, todayDate);
                     alertsRepository.insertAlert(alert);
                     restartTimer();
@@ -115,6 +108,41 @@ public class CountUpTimer {
                     }
                     Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
                 }
+
+
+
+//                if (alerts != null && !alerts.isEmpty()) {
+//                    for (int i = 0; i < alerts.size(); i++) {
+//
+//                        if (alerts.get(i).getDayDate().contains(todayDate)){
+//                            isItContainingTodayDate = true;
+//                            Alert alert = alerts.get(i);
+//                            alerts.get(i).setDayAlertCounter(alert.getDayAlertCounter() + 1);
+//                            alertsRepository.updateAlert(alert);
+//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
+//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
+//                            restartTimer();
+//
+//                        }
+//                    }
+//
+//                    if (!isItContainingTodayDate){
+//                        Alert alert = new Alert(1, todayDate);
+//                        alertsRepository.insertAlert(alert);
+//                        restartTimer();
+//                        Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
+//                        Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
+//                    }
+//                }else{
+//                    Alert alert = new Alert(1, todayDate);
+//                    alertsRepository.insertAlert(alert);
+//                    restartTimer();
+//                    Log.d(TAG, "setForTodayDateAlertTwo: Adding a fresh data...");
+//                    if (alerts != null) {
+//                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
+//                    }
+//                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
+//                }
 
             }
         });
@@ -163,6 +191,22 @@ public class CountUpTimer {
             setForTodayDateAlert();
         }
         return 1 - currentTimeInMinutes <= 0;
+    }
+
+    public static int searchForMatchingDates(List<Alert> alertList , String date){
+        if (alertList != null && !alertList.isEmpty()) {
+            int test;
+            for (int i = 0; i < alertList.size(); i++) {
+
+                if (alertList.get(i).getDayDate().contains(date)){
+                    matchedDateIndex = i;
+                    return 1;
+                }else{
+                    return 0;
+                }
+            }
+        }
+        return -1;
     }
 
 }

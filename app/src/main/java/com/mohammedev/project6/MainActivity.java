@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
                         "alerts:" +
                         alerts.toString());
 
-                notificationsTextView.setText(String.valueOf(alerts.get(alerts.size() - 1).getDayAlertCounter()));
+                if (alerts.size() > 0){
+                    notificationsTextView.setText(String.valueOf(alerts.get(alerts.size() - 1).getDayAlertCounter()));
+                }
 
             }
         });
