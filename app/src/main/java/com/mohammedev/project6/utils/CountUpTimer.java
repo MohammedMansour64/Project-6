@@ -23,7 +23,7 @@ public class CountUpTimer {
 
     private static final String TAG = "CountUpTimer";
 
-    private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
+    private static final int ONE_SECOND_MILLIE_SECONDS = 250;
     private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 60;
 
     private static int currentTimeInMinutes;
@@ -79,8 +79,7 @@ public class CountUpTimer {
 
                 System.out.println("Current time => " + todayDate);
 
-                LiveData<List<Alert>> alertsLiveData = alertsRepository.getAlertsLiveData();
-                List<Alert> alerts = alertsLiveData.getValue();
+                List<Alert> alerts = alertsRepository.getAlerts();
 
                 int matchedDateResult = searchForMatchingDates(alerts , todayDate);
 //                boolean isItContainingTodayDate = false;
@@ -193,11 +192,12 @@ public class CountUpTimer {
         return 1 - currentTimeInMinutes <= 0;
     }
 
-    public static int searchForMatchingDates(List<Alert> alertList , String date){
+    public static int searchForMatchingDates(List<Alert> alertList2 , String date){
+        Log.d(TAG, "searchForMatchingDates: " + "its null or empty");
+        List<Alert> alertList = alertsRepository.getAlerts();
         if (alertList != null && !alertList.isEmpty()) {
-            int test;
             for (int i = 0; i < alertList.size(); i++) {
-
+                Log.d(TAG, "searchForMatchingDates: " + "list size" + alertList.size() + " " + alertList.get(i).getDayDate() + "today's date: " + date);
                 if (alertList.get(i).getDayDate().contains(date)){
                     matchedDateIndex = i;
                     return 1;

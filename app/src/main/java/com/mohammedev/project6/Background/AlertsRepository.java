@@ -31,8 +31,8 @@ public class AlertsRepository {
 
 
     public List<Alert> getAlerts(){
-        final List<Alert> alertLiveData = db.alertsDao().getAlerts();
-        return alertLiveData;
+        final List<Alert> alerts = db.alertsDao().getAlerts();
+        return alerts;
     }
 
     public LiveData<List<Alert>> getAlertsLiveData(){

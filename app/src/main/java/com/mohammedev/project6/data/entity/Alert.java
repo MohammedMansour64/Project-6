@@ -8,7 +8,7 @@ public class Alert {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private int dayAlertCounter;
+    private int dayAlertCounter = 0;
     public int dummy;
 
     private String dayDate;

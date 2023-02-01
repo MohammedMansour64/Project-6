@@ -60,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
         dailyDataBtn = findViewById(R.id.daily_data_btn);
         AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
 
+        alertViewModel.getAlerts().observe(this, new Observer<List<Alert>>() {
+            @Override
+            public void onChanged(List<Alert> alerts) {
+                Log.d(TAG, "onChanged: " +
+                        "alerts:" +
+                        alerts.toString());
+            }
+        });
+
         alertViewModel.getAlertsLiveData().observe(this, new Observer<List<Alert>>() {
             @Override
             public void onChanged(List<Alert> alerts) {
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         alerts.toString());
 
                 if (alerts.size() > 0){
-                    notificationsTextView.setText(String.valueOf(alerts.get(alerts.size() - 1).getDayAlertCounter()));
+                        notificationsTextView.setText(String.valueOf(alerts.get(alerts.size() - 1).getDayAlertCounter()));
                 }
 
             }
