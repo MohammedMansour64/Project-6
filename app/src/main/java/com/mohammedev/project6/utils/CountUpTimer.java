@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.IntStream;
 
 public class CountUpTimer {
 
@@ -81,17 +82,17 @@ public class CountUpTimer {
 
                 List<Alert> alerts = alertsRepository.getAlerts();
 
-                int matchedDateResult = searchForMatchingDates(alerts , todayDate);
+                searchForMatchingDates(alerts , todayDate);
 //                boolean isItContainingTodayDate = false;
 
-                if (matchedDateResult == 1){
+                if (matchedDateIndex != -1){
                     Alert alert = alerts.get(matchedDateIndex);
                     alerts.get(matchedDateIndex).setDayAlertCounter(alert.getDayAlertCounter() + 1);
                     alertsRepository.updateAlert(alert);
                     Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
                     Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
                     restartTimer();
-                }else if (matchedDateResult == 0){
+                }else if (matchedDateIndex == -1){
                     Alert alert = new Alert(1, todayDate);
                     alertsRepository.insertAlert(alert);
                     restartTimer();
@@ -192,21 +193,26 @@ public class CountUpTimer {
         return 1 - currentTimeInMinutes <= 0;
     }
 
-    public static int searchForMatchingDates(List<Alert> alertList2 , String date){
-        Log.d(TAG, "searchForMatchingDates: " + "its null or empty");
-        List<Alert> alertList = alertsRepository.getAlerts();
-        if (alertList != null && !alertList.isEmpty()) {
-            for (int i = 0; i < alertList.size(); i++) {
-                Log.d(TAG, "searchForMatchingDates: " + "list size" + alertList.size() + " " + alertList.get(i).getDayDate() + "today's date: " + date);
-                if (alertList.get(i).getDayDate().contains(date)){
-                    matchedDateIndex = i;
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-        }
-        return -1;
+    public static void searchForMatchingDates(List<Alert> alertList , String date){
+        int index = IntStream.range(0, alertList.size())
+                .filter(i -> alertList.get(i).getDayDate().contains(date))
+                .findFirst()
+                .orElse(-1);
+        matchedDateIndex = index;
+
+
+//        if (alertList != null && !alertList.isEmpty()) {
+//            for (int i = 0; i < alertList.size(); i++) {
+//                Log.d(TAG, "searchForMatchingDates: " + "list size" + alertList.size() + " " + alertList.get(i).getDayDate() + "today's date: " + date);
+//                if (alertList.get(i).getDayDate().contains(date)){
+//                    matchedDateIndex = i;
+//                    return 1;
+//                }else{
+//                    return 0;
+//                }
+//            }
+//        }
+//        return -1;
     }
 
 }
