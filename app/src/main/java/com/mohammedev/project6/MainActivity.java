@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -58,16 +59,25 @@ public class MainActivity extends AppCompatActivity {
         notificationsTextView = findViewById(R.id.notifications_txt);
         weeklyAverageTextView = findViewById(R.id.weekly_average_txt);
         dailyDataBtn = findViewById(R.id.daily_data_btn);
-        AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
 
-        alertViewModel.getAlerts().observe(this, new Observer<List<Alert>>() {
+        dailyDataBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(List<Alert> alerts) {
-                Log.d(TAG, "onChanged: " +
-                        "alerts:" +
-                        alerts.toString());
+            public void onClick(View view) {
+                Intent intentToDailyDataActivity = new Intent(MainActivity.this , DailyDataActivity.class);
+                startActivity(intentToDailyDataActivity);
             }
         });
+
+        AlertViewModel alertViewModel = ViewModelProviders.of(this).get(AlertViewModel.class);
+
+//        alertViewModel.getAlerts().observe(this, new Observer<List<Alert>>() {
+//            @Override
+//            public void onChanged(List<Alert> alerts) {
+//                Log.d(TAG, "onChanged: " +
+//                        "alerts:" +
+//                        alerts.toString());
+//            }
+//        });
 
         alertViewModel.getAlertsLiveData().observe(this, new Observer<List<Alert>>() {
             @Override

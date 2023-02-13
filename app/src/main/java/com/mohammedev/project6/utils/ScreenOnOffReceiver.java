@@ -27,6 +27,11 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
 
     CountUpTimer countUpTimer;
 
+    public ScreenOnOffReceiver(){
+
+    }
+
+
     public ScreenOnOffReceiver(Application application) {
         countUpTimer = CountUpTimer.getInstance(application);
     }

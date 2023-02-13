@@ -1,6 +1,7 @@
 package com.mohammedev.project6.utils;
 
 import android.app.Application;
+import android.app.Notification;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -29,9 +30,11 @@ public class CountUpTimer {
 
     private static int currentTimeInMinutes;
     private static int time;
-    public static boolean timerOff;
+    public  boolean timerOff;
     public static int lastSavedTimeBeforeTurnOff = 0;
     public static int matchedDateIndex;
+
+    public static int timeFinished;
 
     public static AlertsRepository alertsRepository;
 
@@ -60,7 +63,8 @@ public class CountUpTimer {
      * checks if there is an object that has today's date, On which he updates the alert with a new notification.
      * else, he will create a new alert because he didn't register an alert for today. and the new object has 1 alert and today's date
      */
-    public static void setForTodayDateAlert() {
+    public void setForTodayDateAlert() {
+        timeFinished = 1;
 
         Date c = Calendar.getInstance().getTime();
 
@@ -150,7 +154,7 @@ public class CountUpTimer {
 
     }
 
-    public static void startTimer() {
+    public void startTimer() {
         timerOff = false;
         if (!timeAchieved()) {
             TimerTask timerTask = new TimerTask() {
@@ -170,12 +174,12 @@ public class CountUpTimer {
 
     }
 
-    public static void restartTimer(){
+    public void restartTimer(){
         pauseTimer();
         startTimer();
     }
 
-    public static void pauseTimer(){
+    public void pauseTimer(){
         timer.cancel();
 
         timerOff = true;
@@ -183,7 +187,7 @@ public class CountUpTimer {
         lastSavedTimeBeforeTurnOff = time;
     }
 
-    public static boolean timeAchieved() {
+    public boolean timeAchieved() {
         if (1 - currentTimeInMinutes <= 0){
             time = 0;
             lastSavedTimeBeforeTurnOff = 0;

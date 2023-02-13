@@ -27,6 +27,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".DailyDataActivity"
+                  android:exported="true"/>
+
         <service android:name=".sync.ScreenOnOffService"
             tools:ignore="Instantiatable" />
 

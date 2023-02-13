@@ -25,6 +25,7 @@ import com.mohammedev.project6.data.entity.Alert;
 public class NotificationUtils {
     private static final String USAGE_ALERT_CHANNEL_ID = "Usage Alert";
     public static final int ALERT_NOTIFICATION_ID = 1;
+    public static final int ALERT2_NOTIFICATION_ID = 2;
 
     /**
      * This Method is for creating the notification channel, that then used to create notifications
@@ -63,7 +64,7 @@ public class NotificationUtils {
 
     }
 
-    public static void getSyncNotificationTwo(Context context){
+    public static Notification getAlertingNotification(Context context){
         String notificationTitle = context.getString(R.string.app_name);
         String notificationText = "Test";
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.circle);
@@ -73,14 +74,19 @@ public class NotificationUtils {
         notificationBuilder.setLargeIcon(largeIcon);
         notificationBuilder.setContentTitle(notificationTitle);
         notificationBuilder.setContentText(notificationText);
-        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setAutoCancel(false);
+
         Intent intent = new Intent(context, MainActivity.class);
+
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
         taskStackBuilder.addNextIntentWithParentStack(intent);
+
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0 , PendingIntent.FLAG_IMMUTABLE);
         notificationBuilder.setContentIntent(pendingIntent);
         Notification notification = notificationBuilder.build();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(ALERT_NOTIFICATION_ID , notification);
+
+        return notification;
     }
 }

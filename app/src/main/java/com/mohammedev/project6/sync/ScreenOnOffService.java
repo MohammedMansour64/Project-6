@@ -65,16 +65,22 @@ public class ScreenOnOffService extends IntentService {
         Notification notification = NotificationUtils.getSyncNotification(getApplicationContext() , null);
         startForeground(NotificationUtils.ALERT_NOTIFICATION_ID , notification);
 
+        CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
+        if (countUpTimer.timerOff){
+            Notification notification2 = NotificationUtils.getAlertingNotification(getApplicationContext());
+            startForeground(NotificationUtils.ALERT2_NOTIFICATION_ID , notification2);
+        }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH){
 
             if (checkScreenOffOnOverAPI20()){
-                CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
+
                 countUpTimer.startTimer();
             }
 
         }else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH){
             if (checkScreenOffOnUnderAPI20()){
-                CountUpTimer countUpTimer = CountUpTimer.getInstance(getApplication());
                 countUpTimer.startTimer();
             }
         }

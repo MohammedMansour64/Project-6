@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:orientation="vertical"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="match_parent"
-                                                   android:layout_margin="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView3"
@@ -37,21 +37,27 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView3" />
 
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:text="@string/default_number_03"
-              android:textSize="70sp"
-              android:gravity="center"
-              android:layout_centerInParent="true"
-              android:padding="50dp"
-              android:textColor="@android:color/black"
-              android:elevation="2dp"
-              android:translationZ="2dp"
-              android:background="@drawable/circle_big_with_shadow" android:layout_marginEnd="8dp"
-              app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
-              app:layout_constraintStart_toStartOf="parent" android:layout_marginBottom="8dp"
-              app:layout_constraintBottom_toBottomOf="parent" android:layout_marginTop="8dp"
-              app:layout_constraintTop_toTopOf="parent" android:id="@+id/textView4"/>
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/circle_big_with_shadow"
+        android:elevation="2dp"
+        android:gravity="center"
+        android:padding="50dp"
+        android:text="@string/default_number_03"
+        android:textColor="@android:color/black"
+        android:textSize="70sp"
+        android:translationZ="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
