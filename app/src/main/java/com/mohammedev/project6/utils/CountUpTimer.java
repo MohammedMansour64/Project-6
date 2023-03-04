@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer;
 
 import com.mohammedev.project6.Background.AlertsRepository;
 import com.mohammedev.project6.data.entity.Alert;
+import com.mohammedev.project6.sync.SyncUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,12 +45,15 @@ public class CountUpTimer {
 
     public static AppExecutor mAppExecutor;
 
+    public static Application app;
+
     private CountUpTimer(Application application) {
         alertsRepository = new AlertsRepository(application);
         mAppExecutor = AppExecutor.getInstance();
     }
 
     public static CountUpTimer getInstance(Application application){
+        app = application;
         if (sInstance == null){
             sInstance = new CountUpTimer(application);
         }
@@ -193,6 +197,7 @@ public class CountUpTimer {
             lastSavedTimeBeforeTurnOff = 0;
             currentTimeInMinutes = 0;
             setForTodayDateAlert();
+            SyncUtils.scheduleSync(app);
         }
         return 1 - currentTimeInMinutes <= 0;
     }
