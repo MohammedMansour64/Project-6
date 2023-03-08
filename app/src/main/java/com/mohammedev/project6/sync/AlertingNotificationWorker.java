@@ -12,12 +12,11 @@ import androidx.work.WorkerParameters;
 import com.mohammedev.project6.utils.AppExecutor;
 
 public class AlertingNotificationWorker extends Worker {
-
-    private static final String TAG = "AlertingNotificationWorker";
-
     public AlertingNotificationWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
+
+    private static final String TAG = "AlertingNotificationWorker";
 
     @NonNull
     @Override

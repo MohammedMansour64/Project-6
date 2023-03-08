@@ -23,26 +23,12 @@ import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 public class ScreenOnOffService extends IntentService {
 
     private static final String TAG = "SyncIntentService";
-    BroadcastReceiver receiver;
-
-    private ScreenOnOffReceiver mScreenReceiver;
-
     public ScreenOnOffService() {
         super(ScreenOnOffService.class.getName());
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-    }
-
-    private void unregisterScreenStatusReceiver() {
-        try {
-            if (mScreenReceiver != null) {
-                unregisterReceiver(mScreenReceiver);
-            }
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "unregisterScreenStatusReceiver: ", e.getCause());
-        }
     }
 
     @Override
@@ -55,10 +41,10 @@ public class ScreenOnOffService extends IntentService {
             }
         });
 
-
         return START_STICKY;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -80,12 +66,6 @@ public class ScreenOnOffService extends IntentService {
                 countUpTimer.startTimer();
             }
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterScreenStatusReceiver();
     }
 
     public boolean checkScreenOffOnOverAPI20(){

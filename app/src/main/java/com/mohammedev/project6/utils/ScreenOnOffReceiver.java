@@ -4,8 +4,10 @@ import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,6 +34,7 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public ScreenOnOffReceiver(Application application) {
         countUpTimer = CountUpTimer.getInstance(application);
     }
@@ -44,9 +47,9 @@ public class ScreenOnOffReceiver extends BroadcastReceiver {
     public static final String ACTION_SCREEN_OFF = "android.intent.action.SCREEN_OFF";
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
-        SyncUtils.scheduleSync(context);
         if (intent.getAction().equals(Intent.ACTION_SCREEN_OFF)) {
             countUpTimer.pauseTimer();
             Log.d(TAG, "onReceive: screenState: " + "false");

@@ -3,6 +3,7 @@ package com.mohammedev.project6.sync;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
@@ -17,10 +18,6 @@ import com.mohammedev.project6.utils.ScreenOnOffReceiver;
 public class AlertingNotificationService extends IntentService {
 
     private static final String TAG = "AlertingNotificationService";
-
-    private BroadcastReceiver mAlertingNotificationService;
-
-
     public AlertingNotificationService() {
         super(AlertingNotificationService.class.getName());
     }
@@ -44,11 +41,7 @@ public class AlertingNotificationService extends IntentService {
         return START_STICKY;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();

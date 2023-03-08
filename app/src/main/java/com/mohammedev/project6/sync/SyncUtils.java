@@ -27,7 +27,7 @@ public class SyncUtils {
                 .build();
 
         OneTimeWorkRequest request = new OneTimeWorkRequest.Builder(SyncWorker.class)
-                .addTag("worker")
+                .addTag("SyncNotificationWorker")
                 .setConstraints(constraints)
                 .build();
 
@@ -49,13 +49,9 @@ public class SyncUtils {
                 .build();
 
         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(AlertingNotificationWorker.class)
-                .addTag("worker")
+                .addTag("alertingNotificationWorker")
                 .setConstraints(constraints)
                 .build();
-
-
-
-
 
         WorkManager workManager = WorkManager.getInstance(context);
         workManager.enqueue(oneTimeWorkRequest);

@@ -7,6 +7,20 @@
     <string name="daily_data">Daily Data</string>
     <string name="day">Day</string>
 
+    <string-array name="notificationAlertsQuotes">
+        <item>you have used your phone for more than 25 minutes!</item>
+        <item>take a rest...</item>
+        <item>your phone is taking a lot of time from your day</item>
+        <item>its time to take a deep breath</item>
+        <item>The two most powerful warriors are patience and time.</item>
+        <item>Time is money</item>
+        <item>Time waits for no one.</item>
+        <item>Better three hours too soon than a minute too late</item>
+        <item>Lost time is never found again.</item>
+        <item>Time is the most valuable thing a man can spend.</item>
+        <item>Time is the wisest counselor of all.</item>
+    </string-array>
+
     <string-array name="dates">
         <item>01/01/2019</item>
         <item>01/02/2019</item>

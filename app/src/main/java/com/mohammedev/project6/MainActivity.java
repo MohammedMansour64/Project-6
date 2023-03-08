@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NotificationUtils.createWeatherStatusNotificationChannel(this);
+//        NotificationUtils.createWeatherStatusNotificationChannel(this);
 
         notificationsTextView = findViewById(R.id.notifications_txt);
         weeklyAverageTextView = findViewById(R.id.weekly_average_txt);

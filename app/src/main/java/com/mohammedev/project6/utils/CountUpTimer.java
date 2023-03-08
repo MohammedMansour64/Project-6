@@ -1,27 +1,31 @@
 package com.mohammedev.project6.utils;
 
+import android.annotation.TargetApi;
 import android.app.Application;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
+import androidx.annotation.RequiresApi;
 
 import com.mohammedev.project6.Background.AlertsRepository;
+import com.mohammedev.project6.MainActivity;
 import com.mohammedev.project6.data.entity.Alert;
-import com.mohammedev.project6.sync.SyncUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.IntStream;
-
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class CountUpTimer {
 
     private static final String TAG = "CountUpTimer";
@@ -197,10 +201,31 @@ public class CountUpTimer {
             lastSavedTimeBeforeTurnOff = 0;
             currentTimeInMinutes = 0;
             setForTodayDateAlert();
-            SyncUtils.scheduleSync(app);
+            pushNotification();
         }
         return 1 - currentTimeInMinutes <= 0;
     }
+
+    private void pushNotification() {
+        NotificationUtils notificationUtils = new NotificationUtils();
+        notificationUtils.pushAlertingNotification(app);
+    }
+
+//    @TargetApi(Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//    public static void timeAchievedNotification(){
+//        Intent intent = new Intent(app.getApplicationContext(), MainActivity.class);
+//
+//        Notification notification = NotificationUtils.pushAlertingNotification(app);
+//
+//        NotificationChannel notificationChannel = new NotificationChannel(String.valueOf(NotificationUtils.ALERT2_NOTIFICATION_ID) , "Alerting Notification" , NotificationManager.IMPORTANCE_DEFAULT);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(app.getApplicationContext(), 1 , intent , 0);
+//
+//
+//        NotificationManager notificationManager = (NotificationManager) app.getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.createNotificationChannel(notificationChannel);
+//        notificationManager.notify(1, notification);
+//    }
 
     public static void searchForMatchingDates(List<Alert> alertList , String date){
         int index = IntStream.range(0, alertList.size())

@@ -26,7 +26,7 @@ public class AlertsRepository {
         db = AppDatabase.getInstance(application);
         mAlertsDao = db.alertsDao();
         SyncUtils.startSync(application);
-        SyncUtils.scheduleSync(application);
+//        SyncUtils.scheduleSync(application);
     }
 
 
