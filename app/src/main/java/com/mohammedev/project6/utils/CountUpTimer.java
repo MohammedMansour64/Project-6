@@ -30,8 +30,8 @@ public class CountUpTimer {
 
     private static final String TAG = "CountUpTimer";
 
-    private static final int ONE_SECOND_MILLIE_SECONDS = 250;
-    private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 60;
+    private static final int ONE_SECOND_MILLIE_SECONDS = 1000;
+    private static final int TWENTY_FIVE_MINUTES_IN_SECONDS = 1500;
 
     private static int currentTimeInMinutes;
     private static int time;
@@ -121,41 +121,6 @@ public class CountUpTimer {
                     Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
                 }
 
-
-
-//                if (alerts != null && !alerts.isEmpty()) {
-//                    for (int i = 0; i < alerts.size(); i++) {
-//
-//                        if (alerts.get(i).getDayDate().contains(todayDate)){
-//                            isItContainingTodayDate = true;
-//                            Alert alert = alerts.get(i);
-//                            alerts.get(i).setDayAlertCounter(alert.getDayAlertCounter() + 1);
-//                            alertsRepository.updateAlert(alert);
-//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: Updating data...");
-//                            Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data:" + alert);
-//                            restartTimer();
-//
-//                        }
-//                    }
-//
-//                    if (!isItContainingTodayDate){
-//                        Alert alert = new Alert(1, todayDate);
-//                        alertsRepository.insertAlert(alert);
-//                        restartTimer();
-//                        Log.d(TAG, "setForTodayDateAlertOne: Adding a new data...");
-//                        Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: " + alert);
-//                    }
-//                }else{
-//                    Alert alert = new Alert(1, todayDate);
-//                    alertsRepository.insertAlert(alert);
-//                    restartTimer();
-//                    Log.d(TAG, "setForTodayDateAlertTwo: Adding a fresh data...");
-//                    if (alerts != null) {
-//                        Log.d(TAG, "setForTodayDateAlertTwo: new Alerts:" + alerts.size());
-//                    }
-//                    Log.d(TAG, "CountUpTimer: setForTodayDateAlert: New Data: : " + alert);
-//                }
-
             }
         });
 
@@ -196,36 +161,20 @@ public class CountUpTimer {
     }
 
     public boolean timeAchieved() {
-        if (1 - currentTimeInMinutes <= 0){
+        if (25 - currentTimeInMinutes <= 0){
             time = 0;
             lastSavedTimeBeforeTurnOff = 0;
             currentTimeInMinutes = 0;
             setForTodayDateAlert();
             pushNotification();
         }
-        return 1 - currentTimeInMinutes <= 0;
+        return 25 - currentTimeInMinutes <= 0;
     }
 
     private void pushNotification() {
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.pushAlertingNotification(app);
     }
-
-//    @TargetApi(Build.VERSION_CODES.O)
-//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-//    public static void timeAchievedNotification(){
-//        Intent intent = new Intent(app.getApplicationContext(), MainActivity.class);
-//
-//        Notification notification = NotificationUtils.pushAlertingNotification(app);
-//
-//        NotificationChannel notificationChannel = new NotificationChannel(String.valueOf(NotificationUtils.ALERT2_NOTIFICATION_ID) , "Alerting Notification" , NotificationManager.IMPORTANCE_DEFAULT);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(app.getApplicationContext(), 1 , intent , 0);
-//
-//
-//        NotificationManager notificationManager = (NotificationManager) app.getSystemService(Context.NOTIFICATION_SERVICE);
-//        notificationManager.createNotificationChannel(notificationChannel);
-//        notificationManager.notify(1, notification);
-//    }
 
     public static void searchForMatchingDates(List<Alert> alertList , String date){
         int index = IntStream.range(0, alertList.size())
